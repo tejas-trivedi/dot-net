@@ -5,6 +5,7 @@ using MagicVilla_VillaAPI.Data;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Fluent.Infrastructure.FluentModel;
 
 namespace MagicVilla_VillaAPI.Controllers
 {
@@ -18,7 +19,7 @@ namespace MagicVilla_VillaAPI.Controllers
         public VillaAPIController(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
-            _mapper = mapper; 
+            _mapper = mapper;
         }
 
         //private readonly ILogger<VillaAPIController> _logger;
@@ -37,7 +38,7 @@ namespace MagicVilla_VillaAPI.Controllers
             return Ok(_mapper.Map<List<VillaDTO>>(villaList));
         }
 
-        [HttpGet("{id:int}", Name ="GetVilla")]
+        [HttpGet("{id:int}", Name = "GetVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<VillaDTO>> GetVilla(int id)
         {
@@ -77,7 +78,7 @@ namespace MagicVilla_VillaAPI.Controllers
             //{
             //    return StatusCode(StatusCodes.Status500InternalServerError);
             //}
-            Villa model = _mapper.Map<Villa>(createDTO); 
+            Villa model = _mapper.Map<Villa>(createDTO);
 
             //Villa model = new()
             //{
@@ -126,7 +127,7 @@ namespace MagicVilla_VillaAPI.Controllers
             {
                 return BadRequest();
             }
-            Villa model = _mapper.Map<Villa>(updateDTO);  
+            Villa model = _mapper.Map<Villa>(updateDTO);
 
             _db.Villas.Update(model);
             await _db.SaveChangesAsync();
@@ -180,12 +181,11 @@ namespace MagicVilla_VillaAPI.Controllers
             _db.Villas.Update(model);
             await _db.SaveChangesAsync();
 
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);  
+                return BadRequest(ModelState);
             }
             return NoContent();
-        }   
+        }
     }
 }
-
